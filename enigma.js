@@ -51,7 +51,7 @@ var Enigma = (function () {
 			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE' ) );
 			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO' ) );
 
-			var string = 'jmhd';
+			var string = 'lpxv';
 
 			for ( var i = 0; i < string.length; i++ ) {
 				
@@ -229,8 +229,7 @@ var Enigma = (function () {
 							letter = Enigma.ReverseOffset( letter, this.currentReversePosition );
 
 							letter = alphaDecode[ this.reverse[ alphaEncode[ letter ] ] ];
-
-							return Enigma.Offset( letter, this.currentReversePosition );
+							return Enigma.ReverseOffset( letter, this.currentReversePosition );
 
 						} else {
 
@@ -276,7 +275,7 @@ var Enigma = (function () {
 			};
 
 			return alphaEncode[ letter ];
-			
+
 		},
 
 
