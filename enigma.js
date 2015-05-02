@@ -39,7 +39,6 @@ var Enigma = (function () {
 
 		Initialise: function () {
 
-
 			/**
 			 * To begin with I define the concept of a rotor
 			 * before creating three of them, passing in the 
@@ -51,7 +50,7 @@ var Enigma = (function () {
 			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE' ) );
 			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO' ) );
 
-			var string = 'lpxv';
+			var string = 'trys';
 
 			for ( var i = 0; i < string.length; i++ ) {
 				

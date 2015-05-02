@@ -1,0 +1,105 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+body {
+  padding: 0;
+  margin: 0; }
+
+*, *:before, *:after {
+  box-sizing: border-box; }
+
+ul, ol {
+  margin: 0;
+  padding: 0; }
+
+li {
+  list-style: none; }
+
+body {
+  font: 400 16px/1.5 'Droid Sans Mono', sans-serif; }
+
+.top {
+  background: linear-gradient(to bottom, #886540 0%, #886540 10%, #8b6740 10%, #81603c 20%, #8b6740 20%, #85613a 30%, #81603c 30%, #85613a 40%, #825f3a 40%, #825f3a 50%, #8b643b 50%, #886540 60%, #8b643b 60%, #886540 70%, #81603c 70%, #886540 80%, #81603c 80%, #886540 90%, #8b643b 90%, #8b643b 100%, #8b643b 100%);
+  padding: 2rem;
+  background-size: auto 30%; }
+
+.top-panel {
+  background: #333;
+  overflow: auto;
+  padding: 3.75rem 0; }
+
+/* Rotors */
+.rotors {
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0 0.5rem 0.5rem rgba(40, 40, 40, 0.5);
+  border: 0.5rem solid rgba(40, 40, 40, 0.5);
+  text-align: center;
+  background: #2E2E2E;
+  position: relative;
+  height: 14rem;
+  padding: 5.5rem 0 0 1rem;
+  margin: 2rem auto 4rem;
+  width: 31rem; }
+
+.rotors:before {
+  content: '. . .';
+  position: absolute;
+  color: #222;
+  letter-spacing: 1.2rem;
+  text-align: center;
+  font-size: 2em;
+  line-height: 0;
+  width: 100%;
+  left: 0.625rem;
+  top: -3rem; }
+
+.rotor {
+  background: #222;
+  padding: 0 0.125rem;
+  font-size: 1.125em;
+  position: relative;
+  margin: 0 4rem 0 0;
+  display: inline-block; }
+
+.rotor:after {
+  transform: translateY(-50%);
+  content: '';
+  position: absolute;
+  height: 10rem;
+  width: 1rem;
+  background: linear-gradient(to bottom, rgba(238, 238, 238, 0) 0%, #eeeeee 20%, #eeeeee 22%, #cccccc 25%, #eeeeee 28%, #eeeeee 47%, #cccccc 50%, #eeeeee 53%, #eeeeee 72%, #cccccc 75%, #eeeeee 78%, #eeeeee 80%, rgba(238, 238, 238, 0) 100%);
+  right: -2rem;
+  top: 50%; }
+
+.rotor__letters {
+  overflow: hidden;
+  height: 2rem; }
+
+.rotor li {
+  box-shadow: inset 0 2px 4px #282828;
+  background: linear-gradient(to bottom, #efefef 0%, #ffffff 100%);
+  height: 2.25rem;
+  line-height: 1.75;
+  border-bottom: 0.25rem solid #111;
+  padding: 0 0.25rem; }
+
+/* Output panel */
+.output {
+  text-align: center;
+  max-width: 57rem;
+  margin: 0 auto; }
+
+.output li {
+  text-transform: uppercase;
+  height: 4rem;
+  width: 4rem;
+  color: #BBB;
+  box-shadow: inset 0 0 5px rgba(25, 25, 25, 0.5);
+  border-radius: 100%;
+  padding: 0.7rem 0 0;
+  font-size: 1.75em;
+  display: inline-block;
+  margin: 0 0.5rem 1.5rem; }
+  .output li:nth-child(11) {
+    margin-left: 3rem; }
+  .output li.active {
+    text-shadow: 0 0 20px #FFF;
+    color: #FFF; }
