@@ -10,138 +10,65 @@
 
 			<div class="top-panel">
 				
-				<ol class="rotors">
+				<div class="rotors">
 
-					<li class="rotor">
-						<ol class="rotor__letters">
-							<li>01</li>
-							<li>02</li>
-							<li>03</li>
-							<li>04</li>
-							<li>05</li>
-							<li>06</li>
-							<li>07</li>
-							<li>08</li>
-							<li>09</li>
-							<li>10</li>
-							<li>11</li>
-							<li>12</li>
-							<li>13</li>
-							<li>14</li>
-							<li>15</li>
-							<li>16</li>
-							<li>17</li>
-							<li>18</li>
-							<li>19</li>
-							<li>20</li>
-							<li>21</li>
-							<li>22</li>
-							<li>23</li>
-							<li>24</li>
-							<li>25</li>
-							<li>26</li>
-						</ol>
-					</li>
+					<input type="text" maxlength="2" id="rotor_2" value="01" autocomplete="off" />
+					<span class="cog"></span>
 
+					<input type="text" maxlength="2" id="rotor_1" value="01" autocomplete="off" />
+					<span class="cog"></span>
 
-					<li class="rotor">
-						<ol class="rotor__letters">
-							<li>01</li>
-							<li>02</li>
-							<li>03</li>
-							<li>04</li>
-							<li>05</li>
-							<li>06</li>
-							<li>07</li>
-							<li>08</li>
-							<li>09</li>
-							<li>10</li>
-							<li>11</li>
-							<li>12</li>
-							<li>13</li>
-							<li>14</li>
-							<li>15</li>
-							<li>16</li>
-							<li>17</li>
-							<li>18</li>
-							<li>19</li>
-							<li>20</li>
-							<li>21</li>
-							<li>22</li>
-							<li>23</li>
-							<li>24</li>
-							<li>25</li>
-							<li>26</li>
-						</ol>
-					</li>
+					<input type="text" maxlength="2" id="rotor_0" value="01" autocomplete="off" />
+					<span class="cog"></span>
 
-					<li class="rotor">
-						<ol class="rotor__letters">
-							<li>01</li>
-							<li>02</li>
-							<li>03</li>
-							<li>04</li>
-							<li>05</li>
-							<li>06</li>
-							<li>07</li>
-							<li>08</li>
-							<li>09</li>
-							<li>10</li>
-							<li>11</li>
-							<li>12</li>
-							<li>13</li>
-							<li>14</li>
-							<li>15</li>
-							<li>16</li>
-							<li>17</li>
-							<li>18</li>
-							<li>19</li>
-							<li>20</li>
-							<li>21</li>
-							<li>22</li>
-							<li>23</li>
-							<li>24</li>
-							<li>25</li>
-							<li>26</li>
-						</ol>
-					</li>
+					<button class="set" id="set" type="button">Set</button>
 
-				</ol>
+				</div>
 
+				<div class="output">
 
-				<ol class="output">
-					<li>q</li>
-					<li>w</li>
-					<li>e</li>
-					<li>r</li>
-					<li>t</li>
-					<li>y</li>
-					<li>u</li>
-					<li>i</li>
-					<li>o</li>
-					<li>p</li>
-					<li>a</li>
-					<li>s</li>
-					<li>d</li>
-					<li class="active">f</li>
-					<li>g</li>
-					<li>h</li>
-					<li>j</li>
-					<li>k</li>
-					<li>l</li>
-					<li>z</li>
-					<li>x</li>
-					<li>c</li>
-					<li>v</li>
-					<li>b</li>
-					<li>n</li>
-					<li>m</li>
-				</ol>
+					<button id="flick" name="flick" type="button" aria-label="Change Output View"></button>
+
+					<ol class="lamps">
+						<li class="q">q</li>
+						<li class="w">w</li>
+						<li class="e">e</li>
+						<li class="r">r</li>
+						<li class="t">t</li>
+						<li class="y">y</li>
+						<li class="u">u</li>
+						<li class="i">i</li>
+						<li class="o">o</li>
+						<li class="p">p</li>
+						<li class="a">a</li>
+						<li class="s">s</li>
+						<li class="d">d</li>
+						<li class="f">f</li>
+						<li class="g">g</li>
+						<li class="h">h</li>
+						<li class="j">j</li>
+						<li class="k">k</li>
+						<li class="l">l</li>
+						<li class="z">z</li>
+						<li class="x">x</li>
+						<li class="c">c</li>
+						<li class="v">v</li>
+						<li class="b">b</li>
+						<li class="n">n</li>
+						<li class="m">m</li>
+					</ol>
+
+					<div class="encrypted" id="output"></div>
+
+				</div>
+
+				<input type="text" id="input" class="input" autofocus />
 
 			</div>
 
 		</div>
 		
+		<script src="cash.min.js"></script>
 		<script src="enigma.js"></script>
 	</body>
 </html>

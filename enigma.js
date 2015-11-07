@@ -50,13 +50,42 @@ var Enigma = (function () {
 			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE' ) );
 			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO' ) );
 
-			var string = 'trys';
+			var input = document.getElementById( 'input' ),
+				output = document.getElementById( 'output' ),
+				set = document.getElementById( 'set' ),
+				flick = document.getElementById( 'flick' ),
+				result = '';
 
-			for ( var i = 0; i < string.length; i++ ) {
-				
-				Rotors[ 0 ].tick();
-				document.write( Enigma.Encode( string[ i ] ) + '<br />' );
+			input.onkeydown = function () {
 
+				setTimeout(function() {
+
+					if ( alphaDecode[ input.value.toUpperCase() ] === undefined ) {
+						input.value = '';
+						return;
+					}
+
+					result = Enigma.Encode( input.value );
+					input.value = '';
+					output.innerHTML = output.innerHTML + result;
+					$( '.lamps li' ).removeClass( 'active' );
+					$( '.lamps .' + result.toLowerCase() ).addClass( 'active' );
+					Rotors[ 0 ].tick();
+					Enigma.ShiftRotors();
+
+				}, 10 );
+
+			};
+
+
+			set.onclick = function () {
+				for (var i = Rotors.length - 1; i >= 0; i--) {
+					Rotors[i].element.onchange();
+				}
+			};
+
+			flick.onclick = function () {
+				this.classList.toggle( 'open' );
 			};
 			
 		},
@@ -129,6 +158,14 @@ var Enigma = (function () {
 
 
 						/**
+						 * Rotor input element
+						 *
+						 * @var	element
+						 */
+						this.element = '';
+
+
+						/**
 						 * Map rotor settings
 						 *
 						 * @param	string	rotorSettings
@@ -144,8 +181,12 @@ var Enigma = (function () {
 						 * @return	void
 						 */
 						document.body.addEventListener( 'tickOver', this.tickOver );
+
+
+
+						this.element.onchange = Enigma.getRotorInput;
 						
-					};
+					}
 
 
 					/**
@@ -161,8 +202,10 @@ var Enigma = (function () {
 								var mapLetter = Alphabet[ i ];
 								this.map[ mapLetter ] = rotorSettings[ i ];
 								this.reverse[ rotorSettings[ i ] ] = mapLetter;
-							};
+							}
 						}
+
+						this.element = document.getElementById( 'rotor_' + this.id );
 
 					};
 
@@ -191,8 +234,28 @@ var Enigma = (function () {
 
 						}
 
+						this.element.value = this.pad( this.currentPosition + 1 );
+						this.element.classList.add( 'run' );
+
 						return this.currentPosition;
 
+					};
+
+
+					Rotor.prototype.setRotor = function ( value ) {
+						
+						if ( value === 0 ) {
+							this.currentPosition = 0;
+							this.currentReversePosition = 0;
+						} else {
+							this.currentPosition = value;
+							this.currentReversePosition =  parseInt( '-' + value );
+						}
+
+						this.element.value = this.pad( this.currentPosition + 1 );
+						this.element.classList.add( 'run' );
+						Enigma.ShiftRotors();
+						
 					};
 
 
@@ -208,7 +271,7 @@ var Enigma = (function () {
 							Rotors[ request.detail + 1 ].tick();
 						}
 					
-					}
+					};
 
 
 					/**
@@ -242,6 +305,11 @@ var Enigma = (function () {
 
 					};
 
+					Rotor.prototype.pad = function ( int ) {
+						int += '';
+						return int.length === 2 ? int : '0' + int;
+					};
+
 					return Rotor;
 
 				})();
@@ -259,19 +327,25 @@ var Enigma = (function () {
 		 */
 		Encode: function( letter ) {
 
+			if ( letter === ' ' )
+				return ' ';
+
 			letter = alphaDecode[ letter.toUpperCase() ];
+
+			if ( letter === undefined )
+				return '';
 
 			var i;
 
 			for ( i = 0; i < Rotors.length; i++)  {
 				letter = Rotors[ i ].convertLetter( letter );
-			};
+			}
 
 			letter = Reflector[ letter ];
 
 			for ( i = Rotors.length - 1; i >= 0; i-- ) {
 				letter = Rotors[ i ].convertLetter( letter, true );
-			};
+			}
 
 			return alphaEncode[ letter ];
 
@@ -324,13 +398,34 @@ var Enigma = (function () {
 		Trigger: function ( event, data ) {
 
 			if ( window.CustomEvent ) {
-				var event = new CustomEvent( event, { detail: data } );
+				event = new CustomEvent( event, { detail: data } );
 			} else {
-				var event = document.createEvent( 'CustomEvent' );
+				event = document.createEvent( 'CustomEvent' );
 				event.initCustomEvent( event, true, true, data );
 			}
 
 			document.body.dispatchEvent( event );
+
+		},
+
+		ShiftRotors: function () {
+			
+			setTimeout(function() {
+				$( '.rotors input' ).removeClass( 'run' );
+			}, 250 );
+
+		},
+
+		getRotorInput: function () {
+								
+			var rotorValue = parseInt( this.value );
+			if ( rotorValue && rotorValue <= 26 ) {
+				rotorValue--;
+			} else {
+				rotorValue = 0;
+			}
+
+			Rotors[ this.id.replace( 'rotor_', '' ) ].setRotor( rotorValue );
 
 		}
 		
