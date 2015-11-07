@@ -46,9 +46,9 @@ var Enigma = (function () {
 			 */
 			Enigma.Define.Rotor();
 
-			Rotors.push( new Rotor( 'EKMFLGDQVZNTOWYHXUSPAIBRCJ' ) );
-			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE' ) );
-			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO' ) );
+			Rotors.push( new Rotor( 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 0 ) );
+			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 0 ) );
+			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 0 ) );
 
 			var input = document.getElementById( 'input' ),
 				output = document.getElementById( 'output' ),
@@ -104,13 +104,12 @@ var Enigma = (function () {
 			 */
 			Rotor: function () {
 
-
 				/**
 				 * The rotor model
 				 */
 				Rotor = (function() {
 					
-					function Rotor( rotorSettings ) {
+					function Rotor( rotorSettings, turnover ) {
 
 
 						/**
@@ -135,6 +134,14 @@ var Enigma = (function () {
 						 * @var	int
 						 */
 						this.currentReversePosition = 0;
+
+
+						/**
+						 * Turnover position
+						 *
+						 * @var	int
+						 */
+						this.turnover = turnover;
 
 
 						/**
@@ -230,13 +237,15 @@ var Enigma = (function () {
 							this.currentPosition = 0;
 							this.currentReversePosition = 0;
 
-							Enigma.Trigger( 'tickOver', this.id );
-
 						} else {
 
 							this.currentPosition++;
 							this.currentReversePosition--;
 
+						}
+
+						if ( this.currentPosition === this.turnover ) {
+							Enigma.Trigger( 'tickOver', this.id );
 						}
 
 						this.element.value = this.pad( this.currentPosition + 1 );
