@@ -11,8 +11,7 @@ gulp.task( 'sass',
 		.pipe(
 			sass(
 				{
-					//outputStyle: 'compressed',
-					outputStyle: 'nested',
+					outputStyle: 'compressed',
 					precision: 10,
 					onError: function ( err ) {
 						notify().write( err );
