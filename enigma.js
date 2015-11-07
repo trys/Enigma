@@ -54,6 +54,7 @@ var Enigma = (function () {
 				output = document.getElementById( 'output' ),
 				set = document.getElementById( 'set' ),
 				flick = document.getElementById( 'flick' ),
+				info = document.getElementById( 'info' ),
 				result = '';
 
 			input.onkeydown = function () {
@@ -85,6 +86,10 @@ var Enigma = (function () {
 			};
 
 			flick.onclick = function () {
+				this.classList.toggle( 'open' );
+			};
+
+			info.onclick = function () {
 				this.classList.toggle( 'open' );
 			};
 			
@@ -242,14 +247,20 @@ var Enigma = (function () {
 					};
 
 
-					Rotor.prototype.setRotor = function ( value ) {
+					/**
+					 * Set current position to user-set option
+					 * 
+					 * @param	int		val
+					 * @return	void
+					 */
+					Rotor.prototype.setRotor = function ( val ) {
 						
-						if ( value === 0 ) {
+						if ( val === 0 ) {
 							this.currentPosition = 0;
 							this.currentReversePosition = 0;
 						} else {
-							this.currentPosition = value;
-							this.currentReversePosition =  parseInt( '-' + value );
+							this.currentPosition = val;
+							this.currentReversePosition =  parseInt( '-' + val );
 						}
 
 						this.element.value = this.pad( this.currentPosition + 1 );
@@ -305,9 +316,15 @@ var Enigma = (function () {
 
 					};
 
-					Rotor.prototype.pad = function ( int ) {
-						int += '';
-						return int.length === 2 ? int : '0' + int;
+					/**
+					 * Pad the rotor number
+					 * 
+					 * @param	int		val
+					 * @return	int
+					 */
+					Rotor.prototype.pad = function ( val ) {
+						val += '';
+						return val.length === 2 ? val : '0' + val;
 					};
 
 					return Rotor;

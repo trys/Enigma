@@ -3,6 +3,10 @@ body {
   padding: 0;
   margin: 0; }
 
+body, html {
+  min-height: 100%;
+  height: 100%; }
+
 *, *:before, *:after {
   box-sizing: border-box; }
 
@@ -18,13 +22,14 @@ body {
 
 .top {
   background: linear-gradient(to bottom, #886540 0%, #886540 10%, #8b6740 10%, #81603c 20%, #8b6740 20%, #85613a 30%, #81603c 30%, #85613a 40%, #825f3a 40%, #825f3a 50%, #8b643b 50%, #886540 60%, #8b643b 60%, #886540 70%, #81603c 70%, #886540 80%, #81603c 80%, #886540 90%, #8b643b 90%, #8b643b 100%, #8b643b 100%);
-  padding: 0.5em;
+  padding: 1rem;
   background-size: auto 30%; }
 
 .top-panel {
   background: #333;
   overflow: auto;
-  padding: 3rem 0; }
+  padding: 3rem 0;
+  min-height: calc(100vh - 2rem); }
 
 /* Rotors */
 .rotors {
@@ -160,8 +165,8 @@ body {
   .lamps li:nth-child(11) {
     margin-left: 3rem; }
   .lamps li.active {
-    text-shadow: 0 0 20px #FFF;
-    color: #FFF; }
+    text-shadow: 0 0 20px #FFFAE1;
+    color: #FFFAE1; }
 
 [name="flick"] {
   transform: translateY(-50%);
@@ -196,6 +201,75 @@ body {
   [name="flick"].open ~ .encrypted {
     z-index: 5; }
 
+[name=info] {
+  position: absolute;
+  left: 1.75rem;
+  top: 1.75rem;
+  background: rgba(68, 68, 68, 0.7);
+  border: none;
+  box-shadow: none;
+  line-height: 1;
+  color: #FFF;
+  border-radius: 100%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer; }
+  [name=info]:before {
+    content: 'i'; }
+  [name=info]:hover {
+    background: #555; }
+  [name=info].open {
+    background: rgba(17, 17, 17, 0.7);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 0;
+    z-index: 100; }
+    [name=info].open:before {
+      content: 'x';
+      position: fixed;
+      left: 1.75rem;
+      top: 1.75rem;
+      background: rgba(68, 68, 68, 0.7);
+      border: none;
+      box-shadow: none;
+      line-height: 1;
+      color: #FFF;
+      border-radius: 100%;
+      width: 2.5rem;
+      height: 2.5rem;
+      font: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 0 0; }
+    [name=info].open:hover {
+      background: rgba(17, 17, 17, 0.7); }
+    [name=info].open + .content {
+      display: block; }
+
+.content {
+  transform: translate3d(-50%, -50%, 0);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 2rem;
+  z-index: 200;
+  position: fixed;
+  display: none;
+  color: #FFF;
+  width: 90%;
+  max-width: 800px;
+  left: 50%;
+  top: 50%; }
+  .content :first-child {
+    margin: 0; }
+  .content h2 {
+    font-weight: 400; }
+  .content > * + * {
+    margin: 1rem 0 0; }
+
 /* Input */
 .input {
   margin: 1.5rem auto;
@@ -211,3 +285,18 @@ body {
   min-height: 100px;
   padding: 1.5rem;
   font: 1em 'Droid Sans Mono', sans-serif; }
+
+@media screen and (max-width: 980px) {
+  [name="flick"] {
+    right: 0;
+    top: -4rem; } }
+
+@media screen and (max-width: 880px) {
+  .lamps li {
+    font-size: 1.2em;
+    padding: 0.6rem 0 0;
+    width: 3rem;
+    height: 3rem;
+    margin: 0 0.25rem 1.5rem; }
+  .output {
+    max-width: 43rem; } }
