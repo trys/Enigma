@@ -217,6 +217,8 @@ body {
 	background: #444;
 	cursor: pointer;
 	border: none;
+	outline: none;
+	
 	&:before {
 		content: '';
 		position: absolute;
@@ -357,6 +359,7 @@ body {
 	min-height: 100px;
 	padding: 1.5rem;
 	font: 1em 'Droid Sans Mono', sans-serif;
+	outline: none;
 }
 
 @media screen and ( max-width: 980px ) {

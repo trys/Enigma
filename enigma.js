@@ -2,53 +2,31 @@ var Enigma = (function () {
 	"use strict";
 
 	var Rotor,
-		Reflector = {
-			0: 24,
-			1: 17,
-			2: 20,
-			3: 7,
-			4: 16,
-			5: 18,
-			6: 11,
-			7: 3,
-			8: 15,
-			9: 23,
-			10: 13,
-			11: 6,
-			12: 14,
-			13: 10,
-			14: 12,
-			15: 8,
-			16: 4,
-			17: 1,
-			18: 5,
-			19: 25,
-			20: 2,
-			21: 22,
-			22: 21,
-			23: 9,
-			24: 0,
-			25: 19
-		},
+		Reflector = {},
 		Rotors = [],
 		Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-		alphaDecode = {A:0,B:1,C:2,D:3,E:4,F:5,G:6,H:7,I:8,J:9,K:10,L:11,M:12,N:13,O:14,P:15,Q:16,R:17,S:18,T:19,U:20,V:21,W:22,X:23,Y:24,Z:25},
-		alphaEncode = {0:"A",1:"B",2:"C",3:"D",4:"E",5:"F",6:"G",7:"H",8:"I",9:"J",10:"K",11:"L",12:"M",13:"N",14:"O",15:"P",16:"Q",17:"R",18:"S",19:"T",20:"U",21:"V",22:"W",23:"X",24:"Y",25:"Z"};
+		alphaDecode = {},
+		alphaEncode = {};
 
 	return {
 
 		Initialise: function () {
 
-			/**
-			 * To begin with I define the concept of a rotor
-			 * before creating three of them, passing in the 
-			 * A-Z alternatives used to scramble the letters
-			 */
+			Enigma.CreateDecoders();
+
+			Enigma.CreateReflector([24,17,20,7,16,18,11,3,15,23,13,6,14,10,12,8,4,1,5,25,2,22,21,9,0,19]);
+
 			Enigma.Define.Rotor();
 
 			Rotors.push( new Rotor( 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 0 ) );
 			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 0 ) );
 			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 0 ) );
+
+			Enigma.EventHandlers();
+			
+		},
+
+		EventHandlers: function() {
 
 			var input = document.getElementById( 'input' ),
 				output = document.getElementById( 'output' ),
@@ -78,7 +56,6 @@ var Enigma = (function () {
 
 			};
 
-
 			set.onclick = function () {
 				for (var i = Rotors.length - 1; i >= 0; i--) {
 					Rotors[i].element.onchange();
@@ -92,7 +69,7 @@ var Enigma = (function () {
 			info.onclick = function () {
 				this.classList.toggle( 'open' );
 			};
-			
+
 		},
 
 		Define: {
@@ -112,92 +89,28 @@ var Enigma = (function () {
 					function Rotor( rotorSettings, turnover ) {
 
 
-						/**
-						 * Rotor id
-						 *
-						 * @var	int
-						 */
 						this.id = Rotors.length;
-						
-
-						/**
-						 * Current rotor position
-						 *
-						 * @var	int
-						 */
 						this.currentPosition = 0;
-
-
-						/**
-						 * Current rotor reverse position
-						 *
-						 * @var	int
-						 */
 						this.currentReversePosition = 0;
-
-
-						/**
-						 * Turnover position
-						 *
-						 * @var	int
-						 */
 						this.turnover = turnover;
-
+						this.mapLength = rotorSettings.length;
+						this.element = '';
 
 						/**
 						 * Rotor settings
-						 *
-						 * @var	array
 						 */
 						this.map = {};
-
 
 						/**
 						 * Rotor settings in reverse used to calculate
 						 * the return journey through the machine
-						 *
-						 * @var	array
 						 */
 						this.reverse = {};
 
-
-						/**
-						 * The size of the rotor
-						 *
-						 * @var	int
-						 */
-						this.mapLength = rotorSettings.length;
-
-
-						/**
-						 * Rotor input element
-						 *
-						 * @var	element
-						 */
-						this.element = '';
-
-
-						/**
-						 * Map rotor settings
-						 *
-						 * @param	string	rotorSettings
-						 * @return	void
-						 */
 						this.setMap( rotorSettings );
-
-
-						/**
-						 * Document listener for the tick over
-						 *
-						 * @param	int		id
-						 * @return	void
-						 */
 						document.body.addEventListener( 'tickOver', this.tickOver );
-
-
-
 						this.element.onchange = Enigma.getRotorInput;
-						
+
 					}
 
 
@@ -346,6 +259,27 @@ var Enigma = (function () {
 
 
 		/**
+		 * Create the de/encoders on init
+		 */
+		CreateDecoders: function() {
+			for (var i = 0; i < Alphabet.length; i++) {
+				alphaDecode[Alphabet[i]] = i;
+				alphaEncode[i] = Alphabet[i];
+			}
+		},
+
+
+		/**
+		 * Fill the reflector object
+		 */
+		CreateReflector: function( numbers ) {
+			for (var i = 0; i < numbers.length; i++) {
+				Reflector[i] = numbers[i]
+			}
+		},
+
+
+		/**
 		 * Encode letters
 		 *
 		 * @param	letter
@@ -459,13 +393,3 @@ var Enigma = (function () {
 }());
 
 Enigma.Initialise();
-
-
-
-	
-
-
-
-
-
-
