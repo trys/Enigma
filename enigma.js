@@ -4,6 +4,7 @@ var Enigma = (function () {
 	var Rotor,
 		Reflector = {},
 		Rotors = [],
+		Plugboard,
 		Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 		alphaDecode = {},
 		alphaEncode = {};
@@ -13,10 +14,12 @@ var Enigma = (function () {
 		Initialise: function () {
 
 			Enigma.CreateDecoders();
-
 			Enigma.CreateReflector([24,17,20,7,16,18,11,3,15,23,13,6,14,10,12,8,4,1,5,25,2,22,21,9,0,19]);
 
 			Enigma.Define.Rotor();
+			Enigma.Define.Plugboard();
+			
+			Plugboard = new Plugboard(['GT', 'ES', 'XU', 'PA', 'VM', 'FB', 'DZ', 'CW', 'IL', 'NQ']);
 
 			Rotors.push( new Rotor( 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 0 ) );
 			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 0 ) );
@@ -87,7 +90,6 @@ var Enigma = (function () {
 				Rotor = (function() {
 					
 					function Rotor( rotorSettings, turnover ) {
-
 
 						this.id = Rotors.length;
 						this.currentPosition = 0;
@@ -253,7 +255,60 @@ var Enigma = (function () {
 
 				})();
 
-			}
+			},
+
+
+			/**
+			 * Setup the plugboard model
+			 * 
+			 * @return	object
+			 */
+			Plugboard: function () {
+
+				Plugboard = (function() {
+					
+					function Plugboard(groups) {
+
+						this.letters = {};
+						this.reverse = {};
+						
+						for (var i = 0; i < Alphabet.length; i++) {
+							this.letters[ Alphabet[i] ] = Alphabet[i];
+						}
+
+						for (var i = 0; i < groups.length; i++) {
+							var letterOne = groups[i][0],
+									letterTwo = groups[i][1]
+
+							this.letters[ letterOne ] = letterTwo;
+							this.letters[ letterTwo ] = letterOne;
+						}
+
+						for (var key in this.letters) {
+							this.reverse[ this.letters[ key ] ] = key;
+						}
+
+					}
+
+					Plugboard.prototype.convert = function( letter, reverse ) {
+
+						letter = alphaEncode[ letter ];
+
+						if ( reverse ) {
+							letter = this.reverse[ letter ];
+						} else {
+							letter = this.letters[ letter ];
+						}
+
+						return alphaDecode[ letter ];
+
+					};
+
+					return Plugboard;
+
+				})();
+
+			},
 
 		},
 
@@ -290,12 +345,15 @@ var Enigma = (function () {
 			if ( letter === ' ' )
 				return ' ';
 
+			var i;
+
 			letter = alphaDecode[ letter.toUpperCase() ];
 
 			if ( letter === undefined )
 				return '';
 
-			var i;
+
+			letter = Plugboard.convert( letter );
 
 			for ( i = 0; i < Rotors.length; i++)  {
 				letter = Rotors[ i ].convertLetter( letter );
@@ -306,6 +364,9 @@ var Enigma = (function () {
 			for ( i = Rotors.length - 1; i >= 0; i-- ) {
 				letter = Rotors[ i ].convertLetter( letter, true );
 			}
+
+			letter = Plugboard.convert( letter, true );
+
 
 			return alphaEncode[ letter ];
 
