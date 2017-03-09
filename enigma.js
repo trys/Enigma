@@ -21,9 +21,9 @@ var Enigma = (function () {
 			
 			Plugboard = new Plugboard(['GT', 'ES', 'XU', 'PA', 'VM', 'FB', 'DZ', 'CW', 'IL', 'NQ']);
 
-			Rotors.push( new Rotor( 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 0 ) );
-			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 0 ) );
-			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 0 ) );
+			Rotors.push( new Rotor( 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 0, 10 ) );
+			Rotors.push( new Rotor( 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 0, 3 ) );
+			Rotors.push( new Rotor( 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 0, 17 ) );
 
 			Enigma.EventHandlers();
 			
@@ -89,7 +89,7 @@ var Enigma = (function () {
 				 */
 				Rotor = (function() {
 					
-					function Rotor( rotorSettings, turnover ) {
+					function Rotor( rotorSettings, turnover, startPosition ) {
 
 						this.id = Rotors.length;
 						this.currentPosition = 0;
@@ -97,6 +97,11 @@ var Enigma = (function () {
 						this.turnover = turnover;
 						this.mapLength = rotorSettings.length;
 						this.element = '';
+
+						if ( startPosition ) {
+							this.currentPosition = startPosition;
+							this.currentReversePosition = parseInt('-' + startPosition)
+						}
 
 						/**
 						 * Rotor settings
@@ -112,6 +117,10 @@ var Enigma = (function () {
 						this.setMap( rotorSettings );
 						document.body.addEventListener( 'tickOver', this.tickOver );
 						this.element.onchange = Enigma.getRotorInput;
+
+						if ( startPosition ) {
+							this.element.value = this.pad( this.currentPosition + 1 );
+						}
 
 					}
 
@@ -271,14 +280,65 @@ var Enigma = (function () {
 
 						this.letters = {};
 						this.reverse = {};
+						this.groups = groups;
 						
+						this.setup();
+
+						this.visualize();
+
+						var instance = this;
+						$('.plugboard li').on('click', function() {
+							instance.select();
+						});
+						
+						$('.js-plug-close').on('click', function() {
+							instance.close();
+						});
+
+						$('.plugboard-overlay__content input').on('keydown', function() {
+							var $current = this;
+							setTimeout(function() {
+								var letters = [];
+								var pattern = '[';
+								var $inputs = $('.plugboard-overlay__content input');
+								for (var i = 0; i < $inputs.length; i++) {
+									if ( $inputs[i].checkValidity() ) {
+										letters.push($inputs[i].value.toLowerCase());
+									}
+								}
+
+								for (var i = 0; i < Alphabet.length; i++) {
+									if ( letters.indexOf(Alphabet[i].toLowerCase()) === -1 ) {
+										pattern += Alphabet[i].toLowerCase() + Alphabet[i].toUpperCase()
+									}
+								}
+
+								pattern += "]";
+
+								for (var i = 0; i < $inputs.length; i++) {
+									if ( $inputs[i].value === '' ) {
+										$inputs[i].setAttribute('pattern', pattern);
+									} else {
+										$inputs[i].removeAttribute('pattern');
+									}
+								}
+
+								$current.setAttribute('pattern', pattern);
+
+							}, 10)
+						});
+
+					}
+
+					Plugboard.prototype.setup = function(group) {
+
 						for (var i = 0; i < Alphabet.length; i++) {
 							this.letters[ Alphabet[i] ] = Alphabet[i];
 						}
 
-						for (var i = 0; i < groups.length; i++) {
-							var letterOne = groups[i][0],
-									letterTwo = groups[i][1]
+						for (var i = 0; i < this.groups.length; i++) {
+							var letterOne = this.groups[i][0],
+									letterTwo = this.groups[i][1]
 
 							this.letters[ letterOne ] = letterTwo;
 							this.letters[ letterTwo ] = letterOne;
@@ -288,6 +348,59 @@ var Enigma = (function () {
 							this.reverse[ this.letters[ key ] ] = key;
 						}
 
+					}
+
+					Plugboard.prototype.visualize = function() {
+
+						$('.plug').remove();
+						for (var i = 0; i < this.groups.length; i++) {
+							var group = this.groups[i].split('');
+							var $in = $( '.plugboard .' + group[0].toLowerCase() );
+							var $out = $( '.plugboard .' + group[1].toLowerCase() );
+
+							if ( $in.length > 0 && $out.length > 0 ) {
+								$in.append('<span class="plug plug--in"></span>');
+								$out.append('<span class="plug plug--out"></span>');
+							}
+						}
+
+					}
+
+					Plugboard.prototype.select = function() {
+						$(document.body).addClass('plugboard-open');
+						$('.plugboard-overlay__content input').val('');
+						for (var i = 0; i < this.groups.length; i++) {
+							var group = this.groups[i].split('');
+
+							var $row = $('.plugboard-overlay__content li:nth-child(' + (i + 1) + ')' );
+							$row.find('input:nth-child(2)').val(group[0]);
+							$row.find('input:nth-child(3)').val(group[1]);
+						}
+					}
+
+					Plugboard.prototype.close = function() {
+						var $lists = $('.plugboard-overlay__content li');
+						var letters = [];
+						this.groups = [];
+						this.letters = {};
+						this.reverse = {};
+
+						for (var i = 0; i < $lists.length; i++) {
+							var a = $lists[i].children[1].value.toUpperCase();
+							var b = $lists[i].children[2].value.toUpperCase();
+							if ( a && b && Alphabet.indexOf(a) !== -1 && Alphabet.indexOf(b) !== -1 ) {
+								if ( letters.indexOf(a) === -1 && letters.indexOf(b) === -1 ) {
+									letters.push(a);
+									letters.push(b);
+
+									this.groups.push(a+b);
+								}
+							}
+						}
+
+						this.setup();
+						this.visualize();
+						$(document.body).removeClass('plugboard-open');
 					}
 
 					Plugboard.prototype.convert = function( letter, reverse ) {

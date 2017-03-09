@@ -16,15 +16,13 @@
 				<div class="content">
 					<h2>About this Enigma machine</h2>
 					
-					<p>Inspired by a visit to Bletchley Park, I decided to create a JavaScript implementation of the infamous Enigma machine used by Nazi Germany during the Second World War. It models the three rotors (with turnover), reflector and lamp board providing the same encryption level as the 1928 Enigma G model.</p>
-					
-					<p>Currently it lacks the plugboard but I hope to add this shortly. That would bring the machine up to a 1939 naval-spec Enigma.</p>
+					<p>Inspired by a visit to Bletchley Park, I decided to create a JavaScript implementation of the infamous Enigma machine used by Nazi Germany during the Second World War. It models the three rotors (with turnover), reflector and lamp board providing the same encryption level as the 1939 naval-spec Enigma.</p>
 					
 					<h2>How to use this machine</h2>
 					
-					<p>To begin, set the rotor positions using the three input fields. Then choose either lamp or message mode with the toggle switch to the right of the lamp board. Then, type your message in the final box.</p>
+					<p>To begin with, set the plugboard at the bottom of the machine. Then set the rotor positions using the three input fields. Finally, choose either lamp or message mode with the toggle switch to the right of the lamp board. When you're ready to start encryping your message, type your message into the input field.</p>
 
-					<p>The only way to retrieve the encrypted message is to set the rotors to the same starting positions as when the message was typed. Any other setting will leave the message indecipherable.</p>
+					<p>The only way to retrieve the encrypted message is to set the plugboard and rotors to the same starting positions as when the message was typed. Any other setting will leave the message indecipherable.</p>
 				</div>
 				
 				<div class="rotors">
@@ -57,6 +55,9 @@
 						<li class="i">i</li>
 						<li class="o">o</li>
 						<li class="p">p</li>
+
+						<li class="space"></li>
+
 						<li class="a">a</li>
 						<li class="s">s</li>
 						<li class="d">d</li>
@@ -66,6 +67,9 @@
 						<li class="j">j</li>
 						<li class="k">k</li>
 						<li class="l">l</li>
+
+						<li class="space"></li>
+
 						<li class="z">z</li>
 						<li class="x">x</li>
 						<li class="c">c</li>
@@ -80,6 +84,107 @@
 				</div>
 
 				<input type="text" id="input" class="input" autofocus />
+
+				<div class="plugboard">
+
+					<ol>
+						<li class="q">q</li>
+						<li class="w">w</li>
+						<li class="e">e</li>
+						<li class="r">r</li>
+						<li class="t">t</li>
+						<li class="z">z</li>
+						<li class="u">u</li>
+						<li class="i">i</li>
+						<li class="o">o</li>
+						
+						<li class="space"></li>
+
+						<li class="a">a</li>
+						<li class="s">s</li>
+						<li class="d">d</li>
+						<li class="f">f</li>
+						<li class="g">g</li>
+						<li class="h">h</li>
+						<li class="j">j</li>
+						<li class="k">k</li>
+
+						<li class="space"></li>
+
+						<li class="p">p</li>
+						<li class="y">y</li>
+						<li class="x">x</li>
+						<li class="c">c</li>
+						<li class="v">v</li>
+						<li class="b">b</li>
+						<li class="n">n</li>
+						<li class="m">m</li>
+						<li class="l">l</li>
+					</ol>
+					
+				</div>
+
+				<aside class="plugboard-overlay">
+					<div class="plugboard-overlay__bg js-plug-close"></div>
+					<div class="plugboard-content">
+						<div class="plugboard-overlay__content">
+							<small>Only use a letter once!</small>
+							<ul>
+								<li>
+									<strong>Cable 0</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 1</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 2</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 3</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 4</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 5</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 6</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 7</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 8</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+								<li>
+									<strong>Cable 9</strong>
+									<input type="text" maxlength="1" required>
+									<input type="text" maxlength="1" required>
+								</li>
+							</ul>
+							<span class="js-plug-close plugboard-close">OK</span>
+						</div>
+					</div>	
+				</aside>
 
 			</div>
 
