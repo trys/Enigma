@@ -3,10 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
+    "autoprefixer": "^6.7.6",
     "browser-sync": "~2.6.4",
+    "css-mqpacker": "^5.0.1",
+    "cssnano": "^3.10.0",
     "gulp": "^3.9.0",
     "gulp-filter": "~2.0.2",
     "gulp-notify": "~2.2.0",
+    "gulp-postcss": "^6.3.0",
     "gulp-sass": "^3.1.0"
   }
 }

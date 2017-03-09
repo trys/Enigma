@@ -2,7 +2,13 @@ var gulp = require( 'gulp' ),
 	sass = require( 'gulp-sass' ),
 	notify = require( 'gulp-notify' ),
 	browserSync = require( 'browser-sync' ),
-	reload = browserSync.reload;
+	reload = browserSync.reload,
+	postCSS = {
+		nano: require( 'cssnano' ),
+		core: require( 'gulp-postcss' ),
+		media: require( 'css-mqpacker' ),
+		prefix: require( 'autoprefixer' )
+	};
 
 
 gulp.task( 'sass',
@@ -13,10 +19,36 @@ gulp.task( 'sass',
 				{
 					outputStyle: 'compressed',
 					precision: 10,
-					onError: function ( err ) {
-						notify().write( err );
-					}
 				}
+			)
+			.on( 'error', onError )
+		)
+		.pipe(
+			postCSS.core(
+				[
+					postCSS.prefix(
+						{
+							browsers: [
+								'ie >= 9',
+								'ie_mob >= 10',
+								'ff >= 30',
+								'chrome >= 34',
+								'safari >= 7',
+								'opera >= 23',
+								'ios >= 7',
+								'android >= 4.4',
+								'bb >= 10'
+							],
+							cascade : false,
+							remove  : true
+						}
+					),
+					postCSS.media(
+						{
+							sort: true
+						}
+					)
+				]
 			)
 		)
 		.pipe(
@@ -47,6 +79,12 @@ gulp.task( 'js',
 		);
 	}
 );
+
+
+function onError( err ) {
+	notify().write( err );
+	this.emit( 'end' );
+}
 
 
 gulp.task( 'html',
