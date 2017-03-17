@@ -42,11 +42,6 @@ gulp.task( 'sass',
 							cascade : false,
 							remove  : true
 						}
-					),
-					postCSS.media(
-						{
-							sort: true
-						}
 					)
 				]
 			)

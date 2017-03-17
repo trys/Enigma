@@ -1,3 +1,21 @@
+@mixin mq( $min, $max: false ) {
+	@if ( $min and $max == false ) {
+		@media screen and ( min-width: $min ) {
+			@content;
+		}
+	}
+	@else if ( $min and $max == true ) {
+		@media screen and ( max-width: $min ) {
+			@content;
+		}
+	}
+	@else if ( $min and $max ) {
+		@media screen and ( min-width: $min ) and ( max-width: $max ) {
+			@content;
+		}
+	}
+}
+
 body {
 	padding: 0;
 	margin: 0;
@@ -33,6 +51,10 @@ body {
 	background: linear-gradient(to bottom, #886540 0%,#886540 10%,#8b6740 10%,#81603c 20%,#8b6740 20%,#85613a 30%,#81603c 30%,#85613a 40%,#825f3a 40%,#825f3a 50%,#8b643b 50%,#886540 60%,#8b643b 60%,#886540 70%,#81603c 70%,#886540 80%,#81603c 80%,#886540 90%,#8b643b 90%,#8b643b 100%,#8b643b 100%);
 	padding: 1rem;
 	background-size: auto 30%;
+
+	@include mq(480px, true) {
+		padding: 0.5rem;
+	}
 }
 
 .top-panel {
@@ -40,6 +62,10 @@ body {
 	overflow: auto;
 	padding: 2rem 0 0;
 	min-height: calc(100vh - 2rem);
+
+	@include mq(480px, true) {
+		min-height: calc(100vh - 1rem);
+	}
 }
 
 /* Rotors */
@@ -132,6 +158,27 @@ body {
 		}
 	}
 
+
+	@include mq(630px, true) {
+		width: 95%;
+	}
+
+	@include mq(400px, true) {
+		padding-left: 5%;
+
+		input {
+			margin-right: 3.5rem;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	@include mq(330px, true) {
+		padding-left: 0;
+	}
+
 }
 
 /* Output panel */
@@ -142,6 +189,11 @@ body {
 	margin: 0 auto;
 	height: 240px;
 	margin-bottom: 2rem;
+
+	@include mq(880px, true) {
+		max-width: 43rem;
+		width: 95%;
+	}
 }
 
 .encrypted {
@@ -167,6 +219,10 @@ body {
 		opacity: 0.1;
 		left: 50%;
 		top: 50%;
+	}
+
+	@include mq(750px, true) {
+		padding: 1rem;
 	}
 }
 
@@ -205,6 +261,40 @@ body {
 		&.active {
 			text-shadow: 0 0 20px #FFFAE1;
 			color: #FFFAE1;
+		}
+	}
+
+	@include mq(880px, true) {
+		li {
+			font-size: 1.2em;
+			padding: 0.6rem 0 0;
+			width: 3rem;
+			height: 3rem;
+			margin: 0 0.25rem 1.5rem;
+		}
+	}
+
+	@include mq(750px, true) {
+		padding-top: 2.875rem;
+
+		li {
+			font-size: 0.8em;
+			padding: 0.35rem 0 0;
+			width: 2rem;
+			height: 2rem;
+			margin: 0 0 1.5rem;
+		}
+	}
+	
+	@include mq(480px, true) {
+		padding-top: 3.6rem;
+
+		li {
+			font-size: 0.6em;
+			padding: 0.3rem 0 0;
+			width: 1.5rem;
+			height: 1.5rem;
+			margin: 0 -3px 1rem;
 		}
 	}
 }
@@ -253,6 +343,18 @@ body {
 			z-index: 5;
 		}
 	}
+
+	@include mq(630px, 980px) {
+		right: 0;
+		top: -4rem;	
+	}
+
+	@include mq(630px, true) {
+		right: 5px;
+		z-index: 10;
+		top: auto;
+		bottom: -27px;
+	}
 }
 
 [name=info] {
@@ -270,11 +372,13 @@ body {
 	font: inherit;
 	font-size: 1rem;
 	cursor: pointer;
+	outline: none;
 	
 	&:before {
 		content: 'i';
 	}
 	
+	&:focus,
 	&:hover {
 		background: #555;
 	}
@@ -330,6 +434,8 @@ body {
 	max-width: 800px;
 	left: 50%;
 	top: 50%;
+	max-height: 80%;
+	overflow: auto;
 
 	:first-child {
 		margin: 0;
@@ -462,6 +568,64 @@ body {
 			display: none;
 		}
 	}
+
+	@include mq(880px, true) {
+		font-size: 1.2em;
+
+		li {
+			margin: 0 25px 20px;
+		}
+
+		.plug {
+			width: 30px;
+		}
+	}
+
+	@include mq(740px, true) {
+		font-size: 0.8em;
+		padding: 3.25rem 0.5rem 4.25rem;
+
+		.plug {
+			top: 25px;
+		}
+
+		li {
+			padding-bottom: 3rem;
+			margin: 0 15px 20px;
+
+			&:after,
+			&:before {
+				top: 30px;
+			}
+
+			&:after {
+				top: 55px;
+			}
+		}
+	}
+
+	@include mq(480px, true) {
+		font-size: 0.6em;
+		padding: 3.25rem 0 4.25rem;
+
+		li {
+			margin: 0 10px 20px;
+		}
+
+		.plug {
+			width: 15px;
+
+			&:before {
+				height: 8px;
+				width: 8px;
+			}
+
+			&:after {
+				width: 5px;
+				height: 1px;
+			}
+		}
+	}
 }
 
 
@@ -557,8 +721,8 @@ body {
 	border-radius: 5px;
 	text-align: center;
 	display: block;
-	width: 100%;
-	width: 31rem;
+	width: 95%;
+	max-width: 31rem;
 	color: #FFF;
 	min-height: 100px;
 	padding: 1.5rem;
@@ -566,30 +730,6 @@ body {
 	outline: none;
 }
 
-@media screen and ( max-width: 980px ) {
-
-	[name="flick"] {
-		right: 0;
-		top: -4rem;
-	}
-
-}
-
-@media screen and ( max-width: 880px ) {
-
-	.lamps li {
-		font-size: 1.2em;
-		padding: 0.6rem 0 0;
-		width: 3rem;
-		height: 3rem;
-		margin: 0 0.25rem 1.5rem;
-	}
-
-	.output {
-		max-width: 43rem;
-	}
-
-}
 
 
 
